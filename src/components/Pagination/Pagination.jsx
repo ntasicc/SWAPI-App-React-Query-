@@ -18,7 +18,7 @@ const Pagination = (props) => {
     ? infinite.data?.pages[pageNumber]?.results
     : customCharacters;
 
-  const lastPage = Math.floor(characterData?.length / dataLimit);
+  const lastPage = Math.ceil(characterData?.length / dataLimit);
   const startIndex = currentPageNumber * dataLimit - dataLimit;
   const endIndex = startIndex + dataLimit;
 
@@ -58,7 +58,7 @@ const Pagination = (props) => {
             isDisabled={
               isFromApi
                 ? !infinite.data?.pages[pageNumber]?.next
-                : !(currentPageNumber <= lastPage)
+                : !(currentPageNumber < lastPage)
             }
             onClick={loadNextPageHandler}
           >
