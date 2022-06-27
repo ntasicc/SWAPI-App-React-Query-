@@ -5,13 +5,13 @@ import { characterActions } from "../../store/character-slice";
 import { swDataActions } from "../../store/swData-slice";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { filmsActions } from "../../store/films-slice";
-import { useQueryClient } from "react-query";
+//import { useQueryClient } from "react-query";
 
 const CardList = (props) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const characterData = props.data || [];
-  const queryClient = useQueryClient();
+  //const queryClient = useQueryClient();
 
   const loadFilms = (characterName) => {
     const character = characterData.filter((c) => c.name === characterName);
