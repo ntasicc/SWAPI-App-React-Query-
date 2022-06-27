@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const swDataSlice = createSlice({
   name: "swData",
   initialState: {
+    count: 0,
     next: "",
     previous: "",
     results: [],
@@ -21,21 +22,17 @@ const swDataSlice = createSlice({
       state.isLoading = false;
       state.errorOccurred = false;
     },
-    deleteCharacter(state, action) {
-      if (action.payload.fromDB)
-        state.results = state.results.filter(
-          (entry) => entry.id !== action.payload.characterID
-        );
-      else
-        state.customCharacters = state.customCharacters.filter(
-          (entry) => entry.id !== action.payload.characterID
-        );
+    deleteCustomCharacter(state, action) {
+      state.customCharacters = state.customCharacters.filter(
+        (entry) => entry.id !== action.payload
+      );
     },
     addCustomCharacter(state, action) {
       state.customCharacters = [
         ...state.customCharacters,
         { id: state.count, ...action.payload },
       ];
+      state.count += 1;
     },
     isLoading(state) {
       state.isLoading = true;

@@ -1,40 +1,36 @@
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import CardList from "./CardList";
 import { useState } from "react";
+import useInfinitePeople from "../../hooks/use-infinite-people";
 
 const dataLimit = 10;
 
 const Pagination = (props) => {
   const [isFromApi, setIsFromApi] = useState(true);
   const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const dispatch = useDispatch();
-
-  const characterData = useSelector((state) =>
-    isFromApi ? state.swData.results : state.swData.customCharacters
+  const [pageNumber, setPageNumber] = useState(0);
+  const infinite = useInfinitePeople();
+  const customCharacters = useSelector(
+    (state) => state.swData.customCharacters
   );
 
-  const next = useSelector((state) => state.swData.next);
-  const previous = useSelector((state) => state.swData.previous);
+  const characterData = isFromApi
+    ? infinite.data?.pages[pageNumber]?.results
+    : customCharacters;
 
-  const lastPage = Math.floor(characterData.length / dataLimit);
+  const lastPage = Math.floor(characterData?.length / dataLimit);
   const startIndex = currentPageNumber * dataLimit - dataLimit;
   const endIndex = startIndex + dataLimit;
 
   const loadNextPageHandler = () => {
-    if (isFromApi)
-      dispatch({
-        type: "FETCH_SWDATA",
-        payload: next,
-      });
-    else setCurrentPageNumber((prevPageNum) => prevPageNum + 1);
+    if (isFromApi) {
+      infinite.fetchNextPage();
+      setPageNumber((prevPage) => prevPage + 1);
+    } else setCurrentPageNumber((prevPageNum) => prevPageNum + 1);
   };
 
   const loadPreviousPageHandler = () => {
-    if (isFromApi)
-      dispatch({
-        type: "FETCH_SWDATA",
-        payload: previous,
-      });
+    if (isFromApi) setPageNumber((prevPage) => prevPage - 1);
     else setCurrentPageNumber((prevPageNum) => prevPageNum - 1);
   };
 
@@ -43,7 +39,11 @@ const Pagination = (props) => {
       <div className="flex flex-col h-full">
         <div className="self-center mb-10 mt-4">
           <ButtonComponent
-            isDisabled={isFromApi ? !previous : !(currentPageNumber > 1)}
+            isDisabled={
+              isFromApi
+                ? !infinite.data?.pages[pageNumber]?.previous
+                : !(currentPageNumber > 1)
+            }
             onClick={loadPreviousPageHandler}
           >
             🡰
@@ -55,7 +55,11 @@ const Pagination = (props) => {
             {!isFromApi ? "SWAPI" : "Custom"}
           </button>
           <ButtonComponent
-            isDisabled={isFromApi ? !next : !(currentPageNumber <= lastPage)}
+            isDisabled={
+              isFromApi
+                ? !infinite.data?.pages[pageNumber]?.next
+                : !(currentPageNumber <= lastPage)
+            }
             onClick={loadNextPageHandler}
           >
             🡲
@@ -66,6 +70,9 @@ const Pagination = (props) => {
           fromApi={isFromApi}
           openModal={props.openModal}
           filter={props.filter}
+          isLoading={infinite.isLoading}
+          isFetching={infinite.isFetching}
+          currentPage={pageNumber}
           data={
             isFromApi
               ? characterData

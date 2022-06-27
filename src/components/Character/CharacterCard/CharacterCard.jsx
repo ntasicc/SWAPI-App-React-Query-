@@ -16,21 +16,18 @@ const CharacterCard = (props) => {
           </p>
         </div>
         <div className="flex justify-center">
-          {props.characterData.fromDB && (
-            <Button onClick={() => props.selectFilms(props.characterData.id)}>
+          {props.fromApi && (
+            <Button onClick={() => props.selectFilms(props.characterData.name)}>
               Films
             </Button>
           )}
-          <Button
-            onClick={() =>
-              props.deleteCharacter(
-                props.characterData.id,
-                props.characterData.fromDB
-              )
-            }
-          >
-            Delete
-          </Button>
+          {!props.fromApi ? (
+            <Button
+              onClick={() => props.deleteCharacter(props.characterData.id)}
+            >
+              Delete
+            </Button>
+          ) : null}
         </div>
       </div>
     </>

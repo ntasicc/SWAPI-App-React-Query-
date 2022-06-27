@@ -6,12 +6,19 @@ const filmsSlice = createSlice({
     filmsArray: [],
     isLoading: false,
     errorOccurred: false,
+    character: {
+      name: "",
+      urls: [],
+    },
   },
   reducers: {
     addFilms(state, action) {
       state.filmsArray = action.payload;
       state.isLoading = false;
       state.errorOccurred = false;
+    },
+    addCharacter(state, action) {
+      state.character = action.payload;
     },
     isLoading(state) {
       state.isLoading = true;

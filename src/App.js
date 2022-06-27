@@ -1,4 +1,4 @@
-import { Suspense, useEffect, useState } from "react";
+import { Suspense, useState } from "react";
 import "./App.css";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -9,8 +9,10 @@ import CharacterInfo from "./components/Character/CharacterPage/CharacterInfo";
 import NewCharacter from "./components/NewCharacter/NewCharacter";
 import Header from "./components/Layout/Header";
 import StarWarsCrawl from "./components/UI/StarWarsCrawl";
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
 
-let initialRender = true;
+const queryClient = new QueryClient();
 
 function App() {
   const [showFilmsModal, setShowFilmsModal] = useState(false);
@@ -22,16 +24,6 @@ function App() {
     gender: "",
   });
   const dispatch = useDispatch();
-
-  useEffect(() => {
-    if (initialRender) {
-      initialRender = false;
-      dispatch({
-        type: "FETCH_SWDATA",
-        payload: "https://swapi.dev/api/people",
-      });
-    }
-  }, [dispatch]);
 
   const setFilterHandler = (value) => {
     setFilter(value);
@@ -61,7 +53,7 @@ function App() {
   };
 
   return (
-    <>
+    <QueryClientProvider client={queryClient}>
       <div className="container fixed z-10 max-w-full  top-0">
         <Header
           openAddCharacter={openAddCharacterModalHandler}
@@ -115,7 +107,8 @@ function App() {
           </Routes>
         </Suspense>
       </div>
-    </>
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   );
 }
 
