@@ -5,6 +5,11 @@ import { characterActions } from "../../store/character-slice";
 import { swDataActions } from "../../store/swData-slice";
 import LoadingSpinner from "../UI/LoadingSpinner";
 import { filmsActions } from "../../store/films-slice";
+import {
+  GridContainer,
+  GridItem,
+  Paragraph,
+} from "./StyledComponents/components";
 //import { useQueryClient } from "react-query";
 
 const CardList = (props) => {
@@ -66,19 +71,19 @@ const CardList = (props) => {
     });
 
   return (
-    <div className="grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-5 gap-4 gap-y-6 justify-evenly mx-3 mb-4 ">
+    <GridContainer>
       {cards.length === 0 && props.isFetching && (
-        <div className="col-span-full mt-24 ml-24">{<LoadingSpinner />}</div>
+        <GridItem>{<LoadingSpinner />}</GridItem>
       )}
       {cards.length > 0 && !props.isLoading
         ? cards
         : !props.fromApi && (
-            <p className="text-center mt-4 col-span-full text-2xl text-amber-100 italic">
+            <Paragraph>
               There are currently no characters. You can add them by clicking on
               the "Add Character" button
-            </p>
+            </Paragraph>
           )}
-    </div>
+    </GridContainer>
   );
 };
 

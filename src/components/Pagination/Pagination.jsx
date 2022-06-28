@@ -2,6 +2,8 @@ import { useSelector } from "react-redux";
 import CardList from "./CardList";
 import { useState } from "react";
 import useInfinitePeople from "../../hooks/use-infinite-people";
+import { Button, Container } from "./StyledComponents/components";
+import MainContainer from "./StyledComponents/components";
 
 const dataLimit = 10;
 
@@ -36,8 +38,8 @@ const Pagination = (props) => {
 
   return (
     <>
-      <div className="flex flex-col h-full">
-        <div className="self-center mb-10 mt-4">
+      <MainContainer>
+        <Container align mb mt>
           <ButtonComponent
             isDisabled={
               isFromApi
@@ -64,7 +66,7 @@ const Pagination = (props) => {
           >
             🡲
           </ButtonComponent>
-        </div>
+        </Container>
 
         <CardList
           fromApi={isFromApi}
@@ -79,20 +81,20 @@ const Pagination = (props) => {
               : characterData.slice(startIndex, endIndex)
           }
         ></CardList>
-      </div>
+      </MainContainer>
     </>
   );
 };
 
 const ButtonComponent = (props) => {
   return (
-    <button
+    <Button
       disabled={props.isDisabled}
       onClick={props.onClick}
       className="bg-orange-300 w-10 rounded-md mx-10 h-10"
     >
       {props.isDisabled ? "❌" : props.children}
-    </button>
+    </Button>
   );
 };
 

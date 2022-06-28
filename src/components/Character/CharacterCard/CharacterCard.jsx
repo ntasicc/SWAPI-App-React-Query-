@@ -1,21 +1,26 @@
+import {
+  ButtonContainer,
+  MainContainer,
+  Span,
+  Button,
+  MiniContainer,
+} from "./StyledComponents/components";
+
 const CharacterCard = (props) => {
   return (
     <>
-      <div className="border-solid border-yellow-300 flex flex-col bg-stone-800 text-white rounded-3xl border-2 p-2 shadow-black shadow-lg">
-        <div
-          onClick={() => props.loadCharacter(props.characterData)}
-          className="text-center mb-4 mt-2"
-        >
+      <MainContainer>
+        <MiniContainer onClick={() => props.loadCharacter(props.characterData)}>
           <p>
-            <span className="text-gray-300 italic">Name: </span>
+            <Span>Name: </Span>
             {props.characterData.name}
           </p>
           <p>
-            <span className="text-gray-300 italic">Gender: </span>
+            <Span>Gender: </Span>
             {props.characterData.gender}
           </p>
-        </div>
-        <div className="flex justify-center">
+        </MiniContainer>
+        <ButtonContainer align>
           {props.fromApi && (
             <Button onClick={() => props.selectFilms(props.characterData.name)}>
               Films
@@ -28,20 +33,9 @@ const CharacterCard = (props) => {
               Delete
             </Button>
           ) : null}
-        </div>
-      </div>
+        </ButtonContainer>
+      </MainContainer>
     </>
-  );
-};
-
-const Button = (props) => {
-  return (
-    <button
-      onClick={props.onClick}
-      className="text-black font-semibold m-2 px-1 py-1 rounded-lg w-28 bg-orange-300"
-    >
-      {props.children}
-    </button>
   );
 };
 
